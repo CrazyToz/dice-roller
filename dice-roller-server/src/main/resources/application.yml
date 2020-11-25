@@ -1,0 +1,5 @@
+micronaut:
+  application:
+    name: diceRollerServer
+  server:
+    idle-timeout: 3h
