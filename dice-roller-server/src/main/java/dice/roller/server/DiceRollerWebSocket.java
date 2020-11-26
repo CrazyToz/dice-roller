@@ -33,8 +33,8 @@ public class DiceRollerWebSocket {
     }
 
     @OnClose
-    public void onClose(String username) {
-        webSocketBroadcaster.broadcastSync(new PlayerQuitEvent(EventType.PLAYER_QUIT.name(), username));
+    public void onClose(String username, String color) {
+        webSocketBroadcaster.broadcastSync(new PlayerQuitEvent(EventType.PLAYER_QUIT.name(), username, color));
     }
 
 }

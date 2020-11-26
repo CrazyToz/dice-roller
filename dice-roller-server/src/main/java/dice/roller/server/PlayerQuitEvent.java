@@ -5,20 +5,13 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class PlayerQuitEvent {
 
-    public PlayerQuitEvent(String type, String username) {
+    public PlayerQuitEvent(String type, String username, String color) {
         this.type = type;
-        this.data = new Data(username);
+        this.data = new PlayerInfo(username, color);
     }
 
     private String type;
 
-    private Data data;
+    private PlayerInfo data;
 
-    static class Data {
-        private String username;
-
-        public Data(String username) {
-            this.username = username;
-        }
-    }
 }

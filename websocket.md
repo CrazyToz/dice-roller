@@ -25,6 +25,10 @@
 {
   "type": "new_roll",
   "data": {
+    "playerInfo": {
+      "username": "toz",
+      "color": "orange",
+    },
     "dices": [
       {
         "faces": 6,
@@ -45,7 +49,8 @@
 {
   "type": "player_quit",
   "data": {
-    "username": "toz"
+    "username": "toz",
+    "color": "orange"
   }
 }
 ```

@@ -14,6 +14,8 @@ public class NewRollEvent {
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     static class Data {
 
+        private PlayerInfo playerInfo;
+
         private List<Dice> dices;
 
         @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
