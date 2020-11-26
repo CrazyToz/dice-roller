@@ -15,17 +15,16 @@
         data() {
             return {
                 numberOfDice: 0,
-                dices: []
+                dices: this.$store.state.myRolls
             }
         },
         methods: {
             roll() {
-                this.dices = [];
+                let rolls = [];
                 for (let i = 0; i < this.numberOfDice; i++) {
-                    this.dices.push({
-                        value: Math.floor(Math.random() * 6) + 1
-                    })
+                    rolls.push(6);
                 }
+                this.$store.commit('newRoll', rolls);
             }
         }
     }

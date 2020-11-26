@@ -1,9 +1,21 @@
 import {createApp} from 'vue'
 import App from './App.vue'
 import {createStore} from "vuex";
+import {createRouter, createWebHashHistory} from "vue-router";
+import Lobby from "./components/Lobby";
+import Dashboard from "./components/Dashboard";
+
+const routes = [
+    {path: '/', component: Lobby},
+    {path: '/dashboard', component: Dashboard}
+];
+
+const router = createRouter({
+   history: createWebHashHistory(),
+   routes: routes
+});
 
 const store = createStore({
-    debug: process.env.DEBUG,
     state() {
         return {
             webSocketConnectionReady: false,
@@ -21,7 +33,7 @@ const store = createStore({
             };
         },
         webSocketReady(state, webSocket) {
-            if (debug) {
+            if (process.env.VUE_APP_DEBUG) {
                 console.log('WebSocket successfully initiated !');
             }
             state.webSocketConnection = webSocket;
@@ -35,7 +47,7 @@ const store = createStore({
                         value: Math.floor(Math.random() * faces) + 1
                     }
                 });
-                state.myRolls.push(rolls);
+                state.myRolls = state.myRolls.concat(rolls);
                 if (state.webSocketConnectionReady) {
                     state.webSocketConnection.send(JSON.stringify({
                         type: 'NEW_ROLL',
@@ -43,8 +55,8 @@ const store = createStore({
                             playerInfo: state.playerInfo,
                             dices: rolls
                         }
-                    }))
-                    if (debug) {
+                    }));
+                    if (process.env.VUE_APP_DEBUG) {
                         console.log('New roll sent to other players !');
                     }
                 }
@@ -62,7 +74,7 @@ const store = createStore({
         },
         otherPlayerJoined(state, payload) {
             if (!state.otherPlayersRolls.find(player => player.username === payload.username && player.color === payload.color)) {
-                if (debug) {
+                if (process.env.VUE_APP_DEBUG) {
                     console.log(`New played ${payload.username}-${payload.color} has joined !`);
                 }
                 state.otherPlayersRolls.push({
@@ -91,8 +103,8 @@ const store = createStore({
     actions: {
         initWebSocketConnection({commit, state}, playerInfo) {
             if (!state.webSocketConnectionReady) {
-                let webSocketConnection = new WebSocket(`${process.env.WEBSOCKET_API_ENDPOINT}/lobby/${playerInfo.username}/${playerInfo.color}`)
-                webSocketConnection.onopen = function (event) {
+                let webSocketConnection = new WebSocket(`${process.env.VUE_APP_WEBSOCKET_API_ENDPOINT}/lobby/${playerInfo.username}/${playerInfo.color}`);
+                webSocketConnection.onopen = function () {
                     commit('webSocketReady', webSocketConnection);
                 };
                 webSocketConnection.onmessage = function (event) {
@@ -113,6 +125,7 @@ const store = createStore({
     }
 });
 
-const app = createApp(App).mount('#app')
-
+const app = createApp(App);
+app.use(router);
 app.use(store);
+app.mount('#app');

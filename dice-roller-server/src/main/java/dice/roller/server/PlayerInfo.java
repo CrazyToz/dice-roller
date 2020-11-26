@@ -11,4 +11,6 @@ class PlayerInfo {
         this.username = username;
         this.color = color;
     }
+
+    public PlayerInfo() {}
 }
