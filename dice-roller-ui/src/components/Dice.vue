@@ -1,6 +1,6 @@
 <template>
-    <div class="face" v-bind:class="classValue">
-        <div v-for="n in value" :key="n" class="point"></div>
+    <div class="face" v-bind:class="[classValue, size]">
+        <div v-for="n in valueAsNumber" :key="n" class="point"></div>
     </div>
 </template>
 
@@ -10,19 +10,28 @@
         props: {
             value: {
                 validator: function (value) {
-                    return value >=1 && value <=6;
+                    const valueAsInteger = parseInt(value);
+                    return valueAsInteger >=1 && valueAsInteger <=6;
+                }
+            },
+            size: {
+                validator: function (value) {
+                    return value === 'small' || value === 'large'
                 }
             }
         },
         computed: {
+            valueAsNumber: function() {
+                return parseInt(this.value);
+            },
             classValue: function () {
                 return {
-                    one: this.value === 1,
-                    two: this.value === 2,
-                    three: this.value === 3,
-                    four: this.value === 4,
-                    five: this.value === 5,
-                    six: this.value === 6
+                    one: this.valueAsNumber === 1,
+                    two: this.valueAsNumber === 2,
+                    three: this.valueAsNumber === 3,
+                    four: this.valueAsNumber === 4,
+                    five: this.valueAsNumber === 5,
+                    six: this.valueAsNumber === 6
                 }
             }
         }
@@ -32,10 +41,18 @@
 <style scoped>
     .face {
         position: relative;
-        width: 150px;
-        height: 150px;
         background-color: beige;
         border-radius: 25px;
+    }
+
+    .small {
+        width: 25px;
+        height: 25px;
+    }
+
+    .large {
+        width: 150px;
+        height: 150px;
     }
 
     .point {

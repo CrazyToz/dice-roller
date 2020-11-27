@@ -1,35 +1,63 @@
 <template>
     <input v-model="numberOfDice" type="number" placeholder="How many dice ?"/>
     <button @click="roll" type="button">Roll !</button>
-    <Dice v-for="dice in dices" v-bind:value="dice.value" :key="dice"></Dice>
+    <div class="last-roll-container">
+        <Dice v-for="dice in lastRoll" v-bind:value="dice.value" size="large" :key="dice"></Dice>
+    </div>
+    <div class="histories-container">
+        <History player="me" v-bind:rolls="myRolls"></History>
+        <History :player="otherPlayer.username" :rolls="otherPlayer.rolls" v-bind:key="otherPlayer" v-for="otherPlayer in otherPlayersRolls"></History>
+    </div>
 </template>
 
 <script>
     import Dice from "./Dice";
+    import History from "./History";
 
     export default {
         name: "Dashboard",
         components: {
+            History,
             Dice
         },
         data() {
             return {
-                numberOfDice: 0,
-                dices: this.$store.state.myRolls
+                numberOfDice: 0
+            }
+        },
+        computed: {
+            lastRoll() {
+                return this.$store.state.lastRoll
+            },
+            myRolls() {
+                return this.$store.state.myRolls
+            },
+            otherPlayersRolls() {
+                return this.$store.state.otherPlayersRolls
             }
         },
         methods: {
             roll() {
-                let rolls = [];
+                let dices = [];
                 for (let i = 0; i < this.numberOfDice; i++) {
-                    rolls.push(6);
+                    dices.push(6);
                 }
-                this.$store.commit('newRoll', rolls);
+                this.$store.commit('newRoll', dices);
             }
         }
     }
 </script>
 
 <style scoped>
+    .last-roll-container {
+        display: flex;
+    }
 
+    .last-roll-container div {
+        margin: 10px;
+    }
+
+    .histories-container {
+        display: flex;
+    }
 </style>
