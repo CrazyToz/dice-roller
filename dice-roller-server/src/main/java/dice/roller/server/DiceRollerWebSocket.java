@@ -20,7 +20,7 @@ public class DiceRollerWebSocket {
 
     @OnOpen
     public void onOpen(String username, String color, WebSocketSession session) {
-        webSocketBroadcaster.broadcastSync(new NewPlayerEvent(EventType.NEW_PLAYER.name(), username, color), isNotTheSameSession(session));
+        webSocketBroadcaster.broadcastSync(new NewPlayerEvent(username, color), isNotTheSameSession(session));
     }
 
     private Predicate<WebSocketSession> isNotTheSameSession(WebSocketSession session) {
@@ -34,7 +34,7 @@ public class DiceRollerWebSocket {
 
     @OnClose
     public void onClose(String username, String color) {
-        webSocketBroadcaster.broadcastSync(new PlayerQuitEvent(EventType.PLAYER_QUIT.name(), username, color));
+        webSocketBroadcaster.broadcastSync(new PlayerDisconnectedEvent(username, color));
     }
 
 }

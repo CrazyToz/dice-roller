@@ -15,6 +15,18 @@ const router = createRouter({
    routes: routes
 });
 
+store.subscribe(((mutation, state) => {
+    let backedStore = {
+        webSocketConnectionReady: state.webSocketConnectionReady,
+        playerInfo: state.playerInfo,
+        myRolls: state.myRolls,
+        otherPlayersRolls: state.otherPlayersRolls
+    };
+    sessionStorage.setItem('store', JSON.stringify(backedStore));
+}));
+
+store.dispatch('refreshStore');
+
 const app = createApp(App);
 app.use(router);
 app.use(store);

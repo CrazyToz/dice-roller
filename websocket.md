@@ -3,7 +3,12 @@
 1. Server listen connections at */lobby/{username}/{color}* 
 2. Clients are notified of each new user connection (see format bellow)
 3. Clients are notified of each new roll 
-4. Clients are notified of each user disconnection
+4. Clients are notified of each user disconnection. Disconnection is different of a leave event, and could mean that a player refresh the page without leaving the app.
+5. Clients are notified when a player explicitely leave the app (leave button).
+
+# Notes
+
+When a player refresh the browser or close the tab, other clients will not immediatly remove player history, but wait some time and mark the player as disconnected.
 
 # Events format
 
@@ -39,6 +44,18 @@
         "value": 2 
       }
     ]
+  }
+}
+```
+
+## Player disconnected
+
+```json
+{
+  "type": "player_disconnected",
+  "data": {
+    "username": "toz",
+    "color": "orange"
   }
 }
 ```

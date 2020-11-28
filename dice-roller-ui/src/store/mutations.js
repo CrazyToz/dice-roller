@@ -1,3 +1,9 @@
+import {Player} from "../models/Player";
+
+let playerExists = (payload) => {
+    return player => player.username === payload.username && player.color === payload.color;
+}
+
 export const mutations = {
     initPlayerInfo(state, playerInfo) {
         state.playerInfo = {
@@ -47,15 +53,11 @@ export const mutations = {
         }
     },
     otherPlayerJoined(state, payload) {
-        if (!state.otherPlayersRolls.find(player => player.username === payload.username && player.color === payload.color)) {
+        if (!state.otherPlayersRolls.find(playerExists(payload))) {
             if (process.env.VUE_APP_DEBUG) {
-                console.log(`New played ${payload.username}-${payload.color} has joined !`);
+                console.log(`New player ${payload.username}-${payload.color} has joined !`);
             }
-            state.otherPlayersRolls.push({
-                username: payload.username,
-                color: payload.color,
-                rolls: []
-            });
+            state.otherPlayersRolls.push(new Player(payload.username, payload.color, []));
         }
     },
     otherPlayerRoll(state, payload) {
@@ -64,18 +66,24 @@ export const mutations = {
         }
         const player = state.otherPlayersRolls.find(player => player.username === payload.playerInfo.username && player.color === payload.playerInfo.color);
         if (player) {
+            player.connected = true;
             player.rolls.push(payload.dices);
         } else {
             let rolls = [];
             rolls.push(payload.dices);
-            state.otherPlayersRolls.push({
-                username: payload.playerInfo.username,
-                color: payload.playerInfo.color,
-                rolls: rolls
-            });
+            state.otherPlayersRolls.push(new Player(payload.playerInfo.username, payload.playerInfo.color, rolls));
         }
     },
     otherPlayerQuit(state, payload) {
         state.otherPlayersRolls = state.otherPlayersRolls.filter(player => player.username !== payload.username && player.color !== payload.color);
+    },
+    otherPlayerDisconnected(state, payload) {
+        if (process.env.VUE_APP_DEBUG) {
+            console.log(`Played ${payload.username}-${payload.color} has disconnected !`);
+        }
+        const player = state.otherPlayersRolls.find(playerExists(payload));
+        if (player) {
+            player.connected = false;
+        }
     }
 };

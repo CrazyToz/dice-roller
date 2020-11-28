@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class NewPlayerEvent {
 
-    public NewPlayerEvent(String type, String username, String color) {
-        this.type = type;
+    public NewPlayerEvent(String username, String color) {
+        this.type = EventType.NEW_PLAYER.name();
         this.data = new PlayerInfo(username, color);
     }
 

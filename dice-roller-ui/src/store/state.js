@@ -5,6 +5,6 @@ export const state = () => {
         webSocketConnection: null,
         lastRoll: null,
         myRolls: [],
-        otherPlayersRolls: []
+        otherPlayersRolls: [] // Array of models/Player
     }
 }

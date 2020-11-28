@@ -42,17 +42,18 @@
     .face {
         position: relative;
         background-color: beige;
-        border-radius: 25px;
     }
 
     .small {
         width: 25px;
         height: 25px;
+        border-radius: 15px;
     }
 
     .large {
         width: 150px;
         height: 150px;
+        border-radius: 25px;
     }
 
     .point {
