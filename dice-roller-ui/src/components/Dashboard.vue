@@ -2,23 +2,23 @@
     <input v-model="numberOfDice" type="number" placeholder="How many dice ?"/>
     <button @click="roll" type="button">Roll !</button>
     <div class="last-roll-container">
-        <Dice v-for="dice in lastRoll" v-bind:value="dice.value" size="large" :key="dice"></Dice>
+        <Die v-for="dice in lastRoll" v-bind:value="dice.value" size="large" :key="dice"></Die>
     </div>
+    <!--
     <div class="histories-container">
         <History player="me" v-bind:rolls="myRolls"></History>
         <History :player="otherPlayer.username" :rolls="otherPlayer.rolls" v-bind:key="otherPlayer" v-for="otherPlayer in otherPlayersRolls"></History>
     </div>
+    -->
 </template>
 
 <script>
-    import Dice from "./Dice";
-    import History from "./History";
+    import Die from "./Die";
 
     export default {
         name: "Dashboard",
         components: {
-            History,
-            Dice
+            Die
         },
         data() {
             return {

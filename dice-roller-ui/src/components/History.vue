@@ -2,17 +2,17 @@
     <p>History of {{player}}</p>
     <div class="history-container">
         <div v-bind:key="roll" v-for="roll in rolls" class="roll-container">
-            <Dice v-bind:key="dice" v-for="dice in roll" v-bind:value="dice.value" size="small"></Dice>
+            <Die v-bind:key="dice" v-for="dice in roll" v-bind:value="dice.value" size="small"></Die>
         </div>
     </div>
 </template>
 
 <script>
-    import Dice from "./Dice";
+    import Die from "./Die";
 
     export default {
         name: "History",
-        components: {Dice},
+        components: {Die},
         props: {
             player: String,
             rolls: Array
